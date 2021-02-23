@@ -1,5 +1,5 @@
 const Crypto = function(data) {
-    //Properties
+    //Properties 
     this.data = data
     this.errors = []
 }

@@ -7,11 +7,35 @@ const CRYPTO_API_KEY = "6cbe67e231cc62448e4edd3d0b47a159"
 // require Crypto model
 const Crypto = require('../model/Crypto')
 
+// declare objects globally so I can access everywhere.
+var allIDs = {}
+
+// get a list of all crypto Id's for search bar
+axios.get(`https://api.nomics.com/v1/currencies/ticker?key=${CRYPTO_API_KEY}&interval=1d,30d`)
+  .then((response) => {
+    allIDs = response.data
+  });
 //create named exports to handle views
 
 exports.renderHomePage = (req, res) => {
-    //in response renders the index view
-    res.render("index", {layout: 'default', template: 'home-template'})
+    // get 9 popular cryptocurrencies to display
+    const cryptoIds = "BTC,ETH,DOGE,LTC,XRP,ADA,DOT,NEO,CEL"
+
+    //setup API Call
+    const url = `https://api.nomics.com/v1/currencies/ticker?key=${CRYPTO_API_KEY}&ids=${cryptoIds}&interval=1d,30d`
+
+    axios.get(url).then((response) => {
+        // want to display the 9 cryptos as cards on the page. & make the search bar a drop down that filters based on what you type
+        objects = response.data
+
+        //in response renders the index view
+        res.render("index", {
+            layout: 'default', 
+            template: 'home-template',
+            cryptos: objects,
+            ids: allIDs
+        })
+    })
 }
 
 // new function for index post
@@ -54,7 +78,9 @@ exports.getCrypto = (req, res) => {
                 //pass object with additional info to render on index view
                 // using our new preferred names
                 logo:`${logo}`,
-                cryptoInfo: `${cryptoName}'s current price is \$${price} `
+                cryptoInfo: `${cryptoName}'s current price is \$${price} `,
+                cryptos: objects,
+                ids: allIDs
             })
         }).catch((error) => {
             console.log(error)
@@ -68,3 +94,4 @@ exports.renderAboutPage = (req, res) => {
     //in response renders the about view
     res.render("about", {layout: 'default', template: 'home-template'})
 }
+
