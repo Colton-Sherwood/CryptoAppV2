@@ -1,3 +1,12 @@
+<script>
+  var buttonName = '';
+function setval(buttonID)
+{
+	buttonName= buttonID;
+  document.getElementById("purchaseID").value=buttonID;
+  alert(document.getElementById("purchaseID").value);
+}
+</script>
 <!-- Page Content -->
 <div class="container">
   <div class="row">
@@ -24,17 +33,20 @@
         {{cryptoInfo}}
         {{error}}
         </div>
-
+        <form action = "/purchase/purchase" method = "POST">
+        <input type="hidden" name = "purchaseID" id = "purchaseID" value="">
         <div class="row row-cols-3 justify-content-center">
           {{#each cryptos}}
-            <div class="card bg-light col-3 m-2">
-              <img class="card-img-top m-auto pt-3" src="{{this.logo_url}}" alt="{{this.name}} Logo Image" style="width: 75px;">
+            <div class="card bg-light col-3 m-2" style = "height:auto">
+              <img class="card-img-top m-auto pt-3" src="{{this.logo_url}}" alt="{{this.name}} Logo Image" style="height:50px; width:70px;">
               <div class ="card-body mx-auto">
                 <h5>{{this.name}} : {{this.id}}</h5>
                 <p>${{this.price}}</p>
+                <input type = "submit" value="Purchase" class = "btn btn-primary" name = {{this.id}} onclick="javascript:setval(this.name)">
               </div>
             </div>
           {{/each}}
+          </form>
         </div>
       </div>
     </div>

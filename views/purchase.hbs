@@ -1,0 +1,15 @@
+<script>
+    function calcDollars(){
+    var dollars=document.getElementById("coin").value;
+    dollars=dollars*{{price}};
+    document.getElementById("cost").value=dollars;
+    alert(dollars);
+    }
+</script>
+<h2>Purchase Page</h2>
+<body>
+    <p>Choose how many {{name}} ({{purchaseID}}) for the price of ${{price}} you want to purchase</p>
+    <input type="number" id="coin">
+    <button name="calculate" onclick="calcDollars()">Calculate</button>
+    <input id="cost" type="text" value="Frank" oninput="calcDollars()" readonly>
+</body>
