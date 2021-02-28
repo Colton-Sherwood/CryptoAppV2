@@ -24,6 +24,12 @@ const PurchaseSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+
+// virtual property to get total cost of each transaction
+PurchaseSchema.virtual('total')
+  .get (function() {
+    return this.us_dollar * this.coin_count;
+  })
 //FP END
 
 // Create a model called purchase based on the mongoose.model purchase schema fp
