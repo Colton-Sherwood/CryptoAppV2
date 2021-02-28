@@ -12,6 +12,7 @@ const Purchase = require('../model/PurchaseModel');
 
 
 // declare objects globally so I can access everywhere.
+var objects = {}
 var allIDs = {}
 
 // get a list of all crypto Id's for search bar
