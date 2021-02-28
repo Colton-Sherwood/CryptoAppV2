@@ -69,12 +69,17 @@ app.set("views", "views")
 // tell express to use handlebars as the view engine
 app.set("view engine", "hbs")
 
+//set default layout
+app.set('view options', {layout: 'default'});
+
+
 // tell hbs where partials are stored so that we can call them in views
 hbs.registerPartials('./views/partials')
 
 // tell the app to use the router we set up
-app.use("/", require('./Routes/router.js') )
+app.use("/", require('./Routes/router.js'))
 app.use("/user", require('./Routes/user.js'))
+app.use("/purchase", require('./Routes/purchase.js'))
 
 
 // Setup server to listen to requests

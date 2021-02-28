@@ -54,7 +54,6 @@ exports.registration = (req, res) => {
           .then(user => {
               if(user) { 
                 //if a user exists with that email render an error
-                // this isn't working at about 46 mins in video
                 errors.push({ msg: "Email is already registered" })
                 res.render('register', {
                     layout: 'default',
@@ -105,3 +104,5 @@ exports.logout = (req, res) => {
     req.flash('success_msg', 'You have logged out.');
     res.redirect('/user/login')
 };
+
+

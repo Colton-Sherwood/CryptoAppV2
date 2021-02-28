@@ -1,11 +1,13 @@
 <script>
+  
   var buttonName = '';
 function setval(buttonID)
 {
 	buttonName= buttonID;
   document.getElementById("purchaseID").value=buttonID;
-  alert(document.getElementById("purchaseID").value);
+  //alert(document.getElementById("purchaseID").value);
 }
+
 </script>
 <!-- Page Content -->
 <div class="container">
@@ -42,7 +44,7 @@ function setval(buttonID)
               <div class ="card-body mx-auto">
                 <h5>{{this.name}} : {{this.id}}</h5>
                 <p>${{this.price}}</p>
-                <input type = "submit" value="Purchase" class = "btn btn-primary" name = {{this.id}} onclick="javascript:setval(this.name)">
+                <input type = "submit" value="Purchase" class = "btn btn-primary" name = "{{this.id}}" onclick="javascript:setval(this.name)">
               </div>
             </div>
           {{/each}}

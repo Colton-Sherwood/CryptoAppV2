@@ -1,6 +1,8 @@
 // require Crypto model
 const Crypto = require('../model/Crypto')
 
+const Purchase = require('../model/PurchaseModel')
+
 // constant to store our api key
 const CRYPTO_API_KEY = "6cbe67e231cc62448e4edd3d0b47a159"
 
@@ -48,4 +50,5 @@ exports.renderPurchase=(req, res)=>{
                console.log(error)
            })
 }
+
 
