@@ -20,6 +20,7 @@ axios.get(`https://api.nomics.com/v1/currencies/ticker?key=${CRYPTO_API_KEY}&int
   .then((response) => {
     allIDs = response.data
   });
+
 //create named exports to handle views
 
 exports.renderHomePage = (req, res) => {
@@ -77,6 +78,7 @@ exports.getCrypto = (req, res) => {
             const { name: cryptoName } = response.data[0]
             const { logo_url: logo } = response.data[0]
             const { price: price } = response.data[0]
+            const { id: id } = response.data[0]
             res.render("Index", {
                 layout: 'default',
                 template: 'home-template',
@@ -87,7 +89,8 @@ exports.getCrypto = (req, res) => {
                 cryptoName: `${cryptoName}`,
                 cryptoPrice: `${price}`,
                 cryptos: objects,
-                ids: allIDs
+                ids: allIDs,
+                id: id
             })
         }).catch((error) => {
             console.log(error)

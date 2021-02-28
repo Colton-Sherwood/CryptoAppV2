@@ -29,11 +29,24 @@ function setval(buttonID)
             </datalist>
           <button>Go!</button>
         </form>
-        <div class="mt-3">
+        <div class="row justify-content-center">
         <!--two pairs of curly braces allows us to access property from post request-->
-        <img src="{{logo}}" style="width:75px;">
-        {{cryptoInfo}}
+        <!--Show card displaying selected currency if ID is not empty-->
+        {{#if id}}
+          <form id="card" action="/purchase/purchase" method="POST">
+            <input type="hidden" name = "purchaseID" id = "purchaseID" value="">
+            <div class="card bg-light m-2 mt-4" style="height:225px; width:250px;">
+              <img class="card-img-top m-auto pt-3" src="{{logo}}" alt="{{cryptoName}} Logo Image" style="height:50px; width:70px;">
+              <div class ="card-body mx-auto">
+                <h5>{{cryptoName}} : {{id}}</h5>
+                <p>${{cryptoPrice}}</p>
+                <input type = "submit" value="Purchase" class = "btn btn-primary" name = "{{id}}" onclick="javascript:setval(this.name)">
+              </div>
+            </div>
+          </form>
+        {{/if}}
         {{error}}
+
         </div>
         <form action = "/purchase/purchase" method = "POST">
         <input type="hidden" name = "purchaseID" id = "purchaseID" value="">
