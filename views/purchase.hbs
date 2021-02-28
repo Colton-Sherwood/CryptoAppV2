@@ -7,8 +7,9 @@
     }
 </script>
 <h2>Purchase Page</h2>
+{{> messages}}
 <body>
-    <form action="/account" method="POST">
+    <form action="/purchase/account" method="POST">
         <p>Choose how many {{name}} ({{purchaseID}}) for the price of ${{price}} you want to purchase</p>
         <input type="number" id="coin" name="quantity">
         <button name="calculate" onclick="calcDollars()">Calculate</button>

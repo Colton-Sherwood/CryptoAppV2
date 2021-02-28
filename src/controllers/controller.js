@@ -115,18 +115,35 @@ exports.getPurchase = (req, res) =>  {
     const quantity = req.body.quantity;
     const name = req.user.name;
     const email = req.user.email;
+    let errors = [];
 
-    //make new purchase schema based on purchase info
-    var newPurchase = Purchase({
-        crypto_currency: id,
-        usernameID: email,
-        coin_count: quantity,
-        us_dollar: price
+    if(quantity <= 0 || ''){
+        errors.push({msg: "Please enter a quantity greater than 0"})
+    }
+
+    if(errors.length > 0) {
+        res.render("purchase", {
+            errors,
+            crypto,
+            id,
+            price,
+            quantity,
+            name,
+            email
     });
+    } else {
+        //make new purchase schema based on purchase info
+        var newPurchase = Purchase({
+            crypto_currency: id,
+            usernameID: email,
+            coin_count: quantity,
+            us_dollar: price
+        });
 
-    newPurchase.save()
-      .then(purchase => {
-        req.flash('success_msg', 'Transaction successful!');
-        res.redirect('account');
-    })
+        newPurchase.save()
+          .then(purchase => {
+            req.flash('success_msg', 'Transaction successful!');
+            res.redirect('account');
+        })
+    }
 };

@@ -1,6 +1,7 @@
 // require Crypto model
 const Crypto = require('../model/Crypto')
 
+// require purchase model
 const Purchase = require('../model/PurchaseModel')
 
 // constant to store our api key
@@ -50,5 +51,52 @@ exports.renderPurchase=(req, res)=>{
                console.log(error)
            })
 }
+
+exports.renderAccount = (req, res) =>
+res.render('account', {
+    layout: 'default',
+    name: req.user.name,
+});
+
+
+exports.getPurchase = (req, res) =>  {
+    //use destructuring to pull required info from purchase page
+    const crypto = req.body.name;
+    const id = req.body.purchaseID;
+    const price = req.body.price;
+    const quantity = req.body.quantity;
+    const name = req.user.name;
+    const email = req.user.email;
+    let errors = [];
+
+    if(quantity <= 0 || ''){
+        errors.push({msg: "Please enter a quantity greater than 0"})
+    }
+
+    if(errors.length > 0) {
+        res.render("purchase", {
+            errors,
+            name: crypto,
+            purchaseID: id,
+            price,
+            quantity,
+            email
+    });
+    } else {
+        //make new purchase schema based on purchase info
+        var newPurchase = Purchase({
+            crypto_currency: id,
+            usernameID: email,
+            coin_count: quantity,
+            us_dollar: price
+        });
+
+        newPurchase.save()
+          .then(purchase => {
+            req.flash('success_msg', 'Transaction successful!');
+            res.redirect('account');
+        })
+    }
+};
 
 
