@@ -22,6 +22,12 @@ const PurchaseSchema = new mongoose.Schema({
     purchase_date: {
         type: Date,
         default: Date.now
+    },
+    loss: {
+        type: Number
+    },
+    gain: {
+        type:Number
     }
 });
 //FP END
@@ -32,7 +38,7 @@ PurchaseSchema.virtual('total')
 
 PurchaseSchema.virtual('dateFormat')
     .get(function() { return (this.purchase_date).toLocaleString()});
-    
+
 // Create a model called purchase based on the mongoose.model purchase schema fp
 const Purchase = mongoose.model('Purchase', PurchaseSchema); //fp
 
