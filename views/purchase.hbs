@@ -1,25 +1,29 @@
 <script>
     function calcDollars(){
     var dollars=document.getElementById("coin").value;
+    document.getElementById("quantity").value=dollars;
     dollars=dollars*{{price}};
     document.getElementById("cost").value=dollars;
-    alert(dollars);
     }
 </script>
 <h2>Purchase Page</h2>
 {{> messages}}
 <body>
-    <form action="/purchase/account" method="POST">
-        <p>Choose how many {{name}} ({{purchaseID}}) for the price of ${{price}} you want to purchase</p>
-        <input type="number" id="coin" name="quantity">
-        <button name="calculate" onclick="calcDollars()">Calculate</button>
-        <input id="cost" type="text" value="Frank" oninput="calcDollars()" readonly>
 
+        
+        <p>Choose how many {{name}} ({{purchaseID}}) for the price of ${{price}} you want to purchase</p>
+        <input type="number" id="coin" name="quantityValue">
+        <button name="calculate" onclick="calcDollars()">Calculate</button>
+        <input id="cost" type="text" value="0" oninput="calcDollars()" readonly>
+    <form action="/purchase/account" method="POST">
         <!-- pass hidden values when you submit to account page -->
+        <input type="hidden" id="quantity" name="quantity">
         <input type="hidden" name = "name" id = "name" value="{{name}}">
         <input type="hidden" name = "purchaseID" id = "purchaseID" value="{{purchaseID}}">
         <input type="hidden" name = "price" id = "price" value="{{price}}">
-
         <button>Purchase!</button>
+    </form>
+    <form action="/purchase/accountHistory" method="POST">
+        <button>Nevermind</button>
     </form>
 </body>

@@ -17,5 +17,7 @@ router.get("/account", ensureAuthenticated, controller.renderAccount)
 
 router.post("/account", ensureAuthenticated, controller.getPurchase)
 
+router.post("/accountHistory", ensureAuthenticated, controller.accountHistory)
+
 // exporting the router
 module.exports = router;

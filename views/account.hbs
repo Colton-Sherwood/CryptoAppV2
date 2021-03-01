@@ -6,3 +6,11 @@
 </div>
 
 <a href="/user/logout" class="btn btn-secondary">Logout</a>
+
+          {{#each history}}
+            <div class="card bg-light col-3 m-2" style = "height:auto">
+              <div class ="card-body mx-auto">
+                <h5>{{this.coin_count}}</h5>
+              </div>
+            </div>
+          {{/each}}

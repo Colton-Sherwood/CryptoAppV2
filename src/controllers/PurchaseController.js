@@ -16,6 +16,21 @@ exports.renderPurchasePage= (req, res) => {
     res.render("purchase", {layout: 'default', template: 'home-template'})
 }
 
+//use this to get all of the existing cryptocurrency purchases so the user can choose which ones they want to sell.
+exports.accountHistory = (req,res) =>{
+    const user = req.user.email;
+    //objects will store the response from the query and totalCoins will store the coin count from the mongo db in each object.
+    var objects = {};
+    var totalCoins={};
+    //query the purchases based on the current user logged in.
+    Purchase.find({usernameID: user }).then(history => {     
+        console.log(history)
+res.render('account', {
+    name: req.user.name,
+    history 
+});
+   })
+    };
 
 //this will handle the post request.
 exports.renderPurchase=(req, res)=>{
@@ -52,6 +67,7 @@ exports.renderPurchase=(req, res)=>{
            })
 }
 
+//renders the account page
 exports.renderAccount = (req, res) =>
 res.render('account', {
     layout: 'default',
