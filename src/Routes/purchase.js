@@ -19,5 +19,7 @@ router.post("/account", ensureAuthenticated, controller.getPurchase)
 
 router.post("/accountHistory", ensureAuthenticated, controller.accountHistory)
 
+router.post("/sellCrypto", ensureAuthenticated, controller.sellCrypto)
+
 // exporting the router
 module.exports = router;
