@@ -23,14 +23,16 @@ exports.accountHistory = (req,res) =>{
     var objects = {};
     var totalCoins={};
     //query the purchases based on the current user logged in.
-    Purchase.find({usernameID: user }).then(history => {     
-        console.log(history)
-res.render('account', {
-    name: req.user.name,
-    history 
-});
+    Purchase.find({usernameID: user }).then(history => {  
+        //console.log(history)
+        // Reverse history so most recent comes first
+        history = history.reverse(); 
+        res.render('account', {
+        name: req.user.name,
+        history 
+        });
    })
-    };
+};
 
 //this will handle the post request.
 exports.renderPurchase=(req, res)=>{
@@ -67,13 +69,17 @@ exports.renderPurchase=(req, res)=>{
            })
 }
 
-//renders the account page
-exports.renderAccount = (req, res) =>
-res.render('account', {
-    layout: 'default',
-    name: req.user.name,
-});
-
+//renders the account page with transaction history
+exports.renderAccount = (req, res) =>{
+    const user = req.user.email
+    Purchase.find({usernameID: user }).then(history => { 
+        history = history.reverse();   
+        res.render('account', {
+        name: req.user.name,
+        history
+        });
+    })
+}
 
 exports.getPurchase = (req, res) =>  {
     //use destructuring to pull required info from purchase page
