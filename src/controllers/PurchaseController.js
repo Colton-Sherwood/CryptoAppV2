@@ -127,6 +127,8 @@ exports.sellCrypto = (req, res) => {
     const sellQuantity = req.body.sellQuantity
     const unique_id = req.body.unique_id
     const purchase_price = req.body.us_dollar
+    const purchase_date = req.body.purchase_date
+    console.log(purchase_date)
 
     console.log(req.body.unique_id)
 
@@ -143,12 +145,12 @@ exports.sellCrypto = (req, res) => {
         if (result /*> 0*/) {
             // if the sale makes money we will update the "gain" property of that purchase
             // lean removes extra mongoose stuff - makes it cleaner for us - also can't get the _id without it
-            Purchase.findById(unique_id, (purchase => {
+            Purchase.find({purchase_date: purchase_date}).then(purchase => {
                 console.log(purchase);
                 console.log("inside find by id")
                 //purchase.gain = result;
                 //purchase.save();
-            }))
+            })
         }
             res.render("purchase", {
                 layout: 'default',

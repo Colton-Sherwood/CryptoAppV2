@@ -80,7 +80,7 @@ exports.getCrypto = (req, res) => {
             const { price: price } = response.data[0]
             const { id: id } = response.data[0]
             res.render("Index", {
-                layout: 'default',
+                layout: 'default', 
                 template: 'home-template',
                 //pass object with additional info to render on index view
                 // using our new preferred names
