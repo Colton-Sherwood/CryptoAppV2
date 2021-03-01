@@ -27,7 +27,7 @@ function setval(buttonID)
                 <option value="{{this.id}}"/>
               {{/each}}
             </datalist>
-          <button>Go!</button>
+          <button class="btn-secondary">Go!</button>
         </form>
         <div class="row justify-content-center">
         <!--two pairs of curly braces allows us to access property from post request-->
@@ -40,7 +40,7 @@ function setval(buttonID)
               <div class ="card-body mx-auto">
                 <h5>{{cryptoName}} : {{id}}</h5>
                 <p>${{cryptoPrice}}</p>
-                <input type = "submit" value="Purchase" class = "btn btn-primary" name = "{{id}}" onclick="javascript:setval(this.name)">
+                <input type = "submit" value="Purchase" class = "btn btn-secondary" name = "{{id}}" onclick="javascript:setval(this.name)">
               </div>
             </div>
           </form>
@@ -57,7 +57,7 @@ function setval(buttonID)
               <div class ="card-body mx-auto">
                 <h5>{{this.name}} : {{this.id}}</h5>
                 <p>${{this.price}}</p>
-                <input type = "submit" value="Purchase" class = "btn btn-primary" name = "{{this.id}}" onclick="javascript:setval(this.name)">
+                <input type = "submit" value="Purchase" class = "btn btn-secondary" name = "{{this.id}}" onclick="javascript:setval(this.name)">
               </div>
             </div>
           {{/each}}
