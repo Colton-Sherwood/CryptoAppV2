@@ -1,16 +1,29 @@
 <h1 class="mt-4">Account</h1>
 {{> messages}}
 <p class="lead mb-3">Welcome {{name}}</p>
-
-<div class="container lead mb-3" class="transactions">
-</div>
-
 <a href="/user/logout" class="btn btn-secondary">Logout</a>
 
-          {{#each history}}
-            <div class="card bg-light col-3 m-2" style = "height:auto">
-              <div class ="card-body mx-auto">
-                <h5>{{this.coin_count}}</h5>
-              </div>
-            </div>
-          {{/each}}
+<div class="table-responsive mt-3" style="border-radius: 1em;">
+    <table class="table table-dark table-borderless table-striped">
+        <thead>
+            <tr>
+                <th scope="col">CurrencyID</th>
+                <th scope="col">Purchase Date</th>
+                <th scope="col">Cost Per</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each history}}
+                <tr>
+                    <td scope="row">{{this.crypto_currency}}</td>
+                    <td scope="row">{{this.dateFormat}}</td>
+                    <td scope="row">${{this.us_dollar}}</td>
+                    <td scope="row">{{this.coin_count}}</td>
+                    <td scope="row">${{this.total}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
