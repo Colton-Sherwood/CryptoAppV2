@@ -147,8 +147,11 @@ exports.sellCrypto = (req, res) => {
             // lean removes extra mongoose stuff - makes it cleaner for us - also can't get the _id without it
             Purchase.find({ _id: `${unique_id}` }).then(purchase => {
                 //console.log("inside find by id")
+                //console.log(purchase);
+                purchase[0].gain = result;
+                purchase[0].coin_count -= sellQuantity
+                //console.log(purchase[0].gain);
                 console.log(purchase);
-                //purchase.gain = result;
                 //purchase.save();
                 res.redirect("account")
             })
