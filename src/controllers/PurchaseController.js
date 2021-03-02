@@ -148,7 +148,7 @@ exports.sellCrypto = (req, res) => {
                 purchase.coin_count -= sellQuantity
                 //console.log(purchase[0].gain);
                 console.log(purchase);
-                //Purchase.save();
+                purchase.save();
                 res.redirect("account")
             })
         }
