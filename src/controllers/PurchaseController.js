@@ -137,23 +137,29 @@ exports.sellCrypto = (req, res) => {
         // get currentPrice of crypto from the API
         const currentPrice = response.data[0].price
         const result = (sellQuantity * purchase_price) - (sellQuantity * currentPrice)
-        // TEST: Commented out condition for testing
-        if (result /*> 0*/) {
+
+        if (result > 0) {
             // if the sale makes money we will update the "gain" property of that purchase
-            // lean removes extra mongoose stuff - makes it cleaner for us - also can't get the _id without it
             Purchase.findOne({ _id: `${unique_id}` }).then(purchase => {
                 //console.log("inside find by id")
                 //console.log(purchase);
                 purchase.gain = result;
                 purchase.coin_count -= sellQuantity
-                //console.log(purchase[0].gain);
                 console.log(purchase);
                 purchase.save();
                 res.redirect("account")
             })
+            // if sale loses money update loss of purchase
+        } else {
+            Purchase.findOne({ _id: `${unique_id}` }).then(purchase => {
+                purchase.loss = result;
+                purchase.coin_count -= sellQuantity
+                console.log(purchase);
+                purchase.save();
+                res.redirect("account")
+            }).catch((error) => {
+        console.log(error)
+            })
         }
-
-        }).catch((error) => {
-            console.log(error)
-        })
+    })
 }
