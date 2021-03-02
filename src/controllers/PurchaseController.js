@@ -23,7 +23,7 @@ exports.accountHistory = (req, res) => {
     var objects = {};
     var totalCoins = {};
     //query the purchases based on the current user logged in.
-    Purchase.find({ usernameID: user }).lean().then(history => {
+    Purchase.find({ usernameID: user }).then(history => {
         //console.log(history)
         // Reverse history so most recent comes first
         history = history.reverse();
@@ -72,7 +72,7 @@ exports.renderPurchase = (req, res) => {
 //renders the account page with transaction history
 exports.renderAccount = (req, res) => {
     const user = req.user.email
-    Purchase.find({ usernameID: user }).lean().then(history => {
+    Purchase.find({ usernameID: user }).then(history => {
         history = history.reverse();
         res.render('account', {
             name: req.user.name,
@@ -128,9 +128,6 @@ exports.sellCrypto = (req, res) => {
     const unique_id = req.body.unique_id
     const purchase_price = req.body.us_dollar
     const purchase_date = req.body.purchase_date
-    console.log(purchase_date)
-
-    console.log(req.body.unique_id)
 
     //set up API call to get info we want based on value entered
     const url = `https://api.nomics.com/v1/currencies/ticker?key=${CRYPTO_API_KEY}&ids=${crypto_currency}&interval=1d,30d`
@@ -140,7 +137,6 @@ exports.sellCrypto = (req, res) => {
         // get currentPrice of crypto from the API
         const currentPrice = response.data[0].price
         const result = (sellQuantity * purchase_price) - (sellQuantity * currentPrice)
-        console.log(result)
         // TEST: Commented out condition for testing
         if (result /*> 0*/) {
             // if the sale makes money we will update the "gain" property of that purchase
@@ -148,11 +144,12 @@ exports.sellCrypto = (req, res) => {
             Purchase.find({ _id: `${unique_id}` }).then(purchase => {
                 //console.log("inside find by id")
                 //console.log(purchase);
+                purchase{ : }
                 purchase[0].gain = result;
                 purchase[0].coin_count -= sellQuantity
                 //console.log(purchase[0].gain);
-                console.log(purchase);
-                //purchase.save();
+                console.log(purchase[0]);
+                Purchase.save();
                 res.redirect("account")
             })
         }
