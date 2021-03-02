@@ -144,7 +144,6 @@ exports.sellCrypto = (req, res) => {
             Purchase.find({ _id: `${unique_id}` }).then(purchase => {
                 //console.log("inside find by id")
                 //console.log(purchase);
-                purchase{ : }
                 purchase[0].gain = result;
                 purchase[0].coin_count -= sellQuantity
                 //console.log(purchase[0].gain);
