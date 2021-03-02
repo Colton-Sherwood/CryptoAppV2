@@ -141,14 +141,14 @@ exports.sellCrypto = (req, res) => {
         if (result /*> 0*/) {
             // if the sale makes money we will update the "gain" property of that purchase
             // lean removes extra mongoose stuff - makes it cleaner for us - also can't get the _id without it
-            Purchase.find({ _id: `${unique_id}` }).then(purchase => {
+            Purchase.findOne({ _id: `${unique_id}` }).then(purchase => {
                 //console.log("inside find by id")
                 //console.log(purchase);
-                purchase[0].gain = result;
-                purchase[0].coin_count -= sellQuantity
+                purchase.gain = result;
+                purchase.coin_count -= sellQuantity
                 //console.log(purchase[0].gain);
-                console.log(purchase[0]);
-                Purchase.save();
+                console.log(purchase);
+                //Purchase.save();
                 res.redirect("account")
             })
         }
