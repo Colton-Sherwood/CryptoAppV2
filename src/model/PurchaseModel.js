@@ -27,7 +27,7 @@ const PurchaseSchema = new mongoose.Schema({
         type: Number
     },
     gain: {
-        type:Number
+        type: Number
     }
 });
 //FP END
