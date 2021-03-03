@@ -1,39 +1,15 @@
 <script>
     function calcDollars(){
     var dollars=document.getElementById("coin").value;
-    document.getElementById("quantity").value=dollars;
     dollars=dollars*{{price}};
     document.getElementById("cost").value=dollars;
+    alert(dollars);
     }
 </script>
 <h2>Purchase Page</h2>
-{{> messages}}
-        
-<p>Choose how many {{name}} ({{purchaseID}}) for the price of ${{price}} you want to purchase</p>
-
-<div class="row">
-    <div class="col">
-        <input type="number" id="coin" name="quantityValue" class="form-control" placeholder="Quantity" min="0">
-    </div>
-    <div class="col">
-        <button name="calculate" onclick="calcDollars()" class="btn-secondary form-control">Calculate</button>
-    </div>
-    <div class="col">
-        <input id="cost" class="form-control" type="text" value="0" oninput="calcDollars()" readonly>
-    </div>
-</div>
-
-<br>
-<div class="row">
-    <form action="/purchase/account" method="POST" class="col">
-        <!-- pass hidden values when you submit to account page -->
-        <input type="hidden" name="quantity" id="quantity">
-        <input type="hidden" name = "name" id = "name" value="{{name}}">
-        <input type="hidden" name = "purchaseID" id = "purchaseID" value="{{purchaseID}}">
-        <input type="hidden" name = "price" id = "price" value="{{price}}">
-        <button class="btn-secondary form-control col">Purchase!</button>
-    </form>
-    <form action="/purchase/accountHistory" method="POST" class="col">
-        <button class="btn-secondary form-control col">Cancel</button>
-    </form>
-</div>
+<body>
+    <p>Choose how many {{name}} ({{purchaseID}}) for the price of ${{price}} you want to purchase</p>
+    <input type="number" id="coin">
+    <button name="calculate" onclick="calcDollars()">Calculate</button>
+    <input id="cost" type="text" value="Frank" oninput="calcDollars()" readonly>
+</body>

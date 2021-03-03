@@ -19,5 +19,12 @@ router.post("/", controller.getCrypto)
 
 router.get("/about", controller.renderAboutPage)
 
+//Account
+router.get('/account', ensureAuthenticated, (req, res) =>
+    res.render('account', {
+        layout: 'default',
+    name: req.user.name
+    }));
+
 // exporting the router
 module.exports = router;

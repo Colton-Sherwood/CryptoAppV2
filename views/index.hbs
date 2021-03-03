@@ -1,13 +1,11 @@
 <script>
-  
   var buttonName = '';
 function setval(buttonID)
 {
 	buttonName= buttonID;
   document.getElementById("purchaseID").value=buttonID;
-  //alert(document.getElementById("purchaseID").value);
+  alert(document.getElementById("purchaseID").value);
 }
-
 </script>
 <!-- Page Content -->
 <div class="container">
@@ -27,26 +25,13 @@ function setval(buttonID)
                 <option value="{{this.id}}"/>
               {{/each}}
             </datalist>
-          <button class="btn-secondary">Go!</button>
+          <button>Go!</button>
         </form>
-        <div class="row justify-content-center">
+        <div class="mt-3">
         <!--two pairs of curly braces allows us to access property from post request-->
-        <!--Show card displaying selected currency if ID is not empty-->
-        {{#if id}}
-          <form id="card" action="/purchase/purchase" method="POST">
-            <input type="hidden" name = "purchaseID" id = "purchaseID" value="">
-            <div class="card bg-light m-2 mt-4" style="height:225px; width:250px;">
-              <img class="card-img-top m-auto pt-3" src="{{logo}}" alt="{{cryptoName}} Logo Image" style="height:50px; width:70px;">
-              <div class ="card-body mx-auto">
-                <h5>{{cryptoName}} : {{id}}</h5>
-                <p>${{cryptoPrice}}</p>
-                <input type = "submit" value="Purchase" class = "btn btn-secondary" name = "{{id}}" onclick="javascript:setval(this.name)">
-              </div>
-            </div>
-          </form>
-        {{/if}}
+        <img src="{{logo}}" style="width:75px;">
+        {{cryptoInfo}}
         {{error}}
-
         </div>
         <form action = "/purchase/purchase" method = "POST">
         <input type="hidden" name = "purchaseID" id = "purchaseID" value="">
@@ -57,7 +42,7 @@ function setval(buttonID)
               <div class ="card-body mx-auto">
                 <h5>{{this.name}} : {{this.id}}</h5>
                 <p>${{this.price}}</p>
-                <input type = "submit" value="Purchase" class = "btn btn-secondary" name = "{{this.id}}" onclick="javascript:setval(this.name)">
+                <input type = "submit" value="Purchase" class = "btn btn-primary" name = {{this.id}} onclick="javascript:setval(this.name)">
               </div>
             </div>
           {{/each}}
