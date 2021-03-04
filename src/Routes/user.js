@@ -1,113 +1,22 @@
 const express = require('express');
 const router = express.Router();
 
-// Bring in user model
-const User = require('../model/User');
-
-// require bcrypt so we can encrypt passwords
-const bcrypt = require('bcryptjs');
-
-// require passport
-const passport = require('passport');
+// require userController
+const userController = require('../controllers/userController');
 
 //Login Page
-router.get('/login', (req, res) => res.render('Login'));
+router.get('/login', userController.renderLogin) 
 
 //Register Page
-router.get('/register', (req, res) => res.render('Register', {layout: 'default'}));
+router.get('/register', userController.renderRegister)
 
 //Register Handle
-router.post('/register', (req, res) => {
-    // use destructuring to pull values from registration form into variables based on their 'name'
-    const { name, email, password, password2 } = req.body;
-    let errors = [];
-
-    // Check required fields to make sure they have values
-    if(!name || !email || !password || !password2) {
-        errors.push({ msg: 'Please fill in all fields'});
-        console.log(errors);
-    }
-
-    // Check passwords match
-    if(password !== password2) {
-        errors.push({ msg: 'Passwords do not match.'});
-        console.log(errors);
-    }
-
-    // Check pass length
-    if(password.length < 6) {
-        errors.push({ msg: 'Password must be at least 6 characters.'});
-        console.log(errors);
-    }
-
-    if(errors.length > 0) {
-        res.render('register', {
-            layout: 'default',
-            errors,
-            name,
-            email,
-            password,
-            password2
-        });
-    } else {
-        // Validation passed
-        // Use mongoose Method findOne to check if user exists with the entered email
-        User.findOne({ email: email })
-          .then(user => {
-              if(user) { 
-                //if a user exists with that email render an error
-                // this isn't working at about 46 mins in video
-                errors.push({ msg: "Email is already registered" })
-                res.render('register', {
-                    layout: 'default',
-                    errors,
-                    name,
-                    email,
-                    password,
-                    password2
-                });
-              } else {
-                  // Create new instance of User - newUser - and pass in values from input
-                  const newUser = new User({
-                      name,
-                      email,
-                      password
-                  });
-
-                  // Hash password
-                  bcrypt.genSalt(10, (err, salt) =>
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
-                        if(err) throw err;
-                        // Set newUser's password to the new hashed password
-                        newUser.password = hash;
-                        // Save user to MongoDB
-                        newUser.save()
-                          .then(user => {
-                              req.flash('success_msg', 'You are now registered and can login.');
-                              res.redirect('login');
-                          })
-                          .catch(err => console.log(err));
-                    }))
-
-              }
-          });
-    }
-});
+router.post('/register', userController.registration)
 
 // Login Handler
-router.post('/login', (req, res, next) => {
-  passport.authenticate('local', {
-      successRedirect: '/account',
-      failureRedirect: '/user/login',
-      failureFlash: true
-  })(req, res, next);
-});
+router.post('/login', userController.login)
 
 // Logout Handler user passport's logout function
-router.get('/logout', (req, res) => {
-    req.logout();
-    req.flash('success_msg', 'You have logged out.');
-    res.redirect('/user/login')
-})
+router.get('/logout', userController.logout)
 
 module.exports = router;
