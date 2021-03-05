@@ -10,6 +10,8 @@ const CRYPTO_API_KEY = "6cbe67e231cc62448e4edd3d0b47a159"
 //import axios to handle api calls
 const axios = require("axios")
 
+var allIDs = {}
+
 //this will get the purchase page.
 exports.renderPurchasePage = (req, res) => {
     //in response renders the about view
@@ -75,7 +77,11 @@ exports.renderAccount = (req, res) => {
     var totalGain = 0
     var totalLoss = 0
     var total = 0
-    var allIDs = {}
+
+    axios.get(`https://api.nomics.com/v1/currencies/ticker?key=${CRYPTO_API_KEY}&interval=1d,30d`)
+    .then((response) => {
+        allIDs = response.data
+    });
 
     Purchase.find({ usernameID: user }).then(history => {
 
@@ -88,11 +94,8 @@ exports.renderAccount = (req, res) => {
         console.log("this is total loss " + totalLoss)
         console.log(totalGain + totalLoss)
         total = totalGain + totalLoss
-
+        console.log(allIDs[0])
         history = history.reverse();
-
-
-
         res.render('account', {
             name: req.user.name,
             history,
