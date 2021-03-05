@@ -3,8 +3,7 @@
 <p class="lead mb-3">Welcome {{name}}</p>
 <a href="/user/logout" class="btn btn-secondary">Logout</a>
 <br><br>
-
-<input class="form-control no-border" type="number" id="TotalReturn" placeholder="Total Return" readonly>
+<input class="form-control no-border" type="text" id="TotalReturn" placeholder="Total Return" readonly>
 
 <div class="table-responsive mt-3" style="border-radius: 1em;">
     <table class="table table-dark table-borderless table-striped">
@@ -12,7 +11,9 @@
             <tr>
                 <th scope="col" name="currency">CurrencyID</th>
                 <th scope="col">Purchase Date</th>
-                <th scope="col">Cost Per</th>
+                <th scope="col">Original Coin Cost</th>
+                <th scope="col">Current Coin Cost</th>
+                <th scope="col">Profit Per Coin</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Total</th>
                 <th scope="col">Quantity to sell</th>
@@ -26,6 +27,11 @@
                     <td scope="row">{{this.crypto_currency}}</td>
                     <td scope="row">{{this.dateFormat}}</td>
                     <td scope="row">${{this.us_dollar}}</td>
+                    <td scope="row">
+                        <input type="text" name="{{this._id}}" id="{{this._id}}" class="unique_id"
+                            value="{{this.crypto_currency}}" readonly>
+                    </td>
+                    <td>PROFIT</td>
                     <td scope="row">{{this.coin_count}}</td>
                     <td scope="row">${{this.total}}</td>
                     <td scope="row">
@@ -34,7 +40,7 @@
                     </td>
                     <td scope="row">
                         <button class="btn btn-secondary form-control">Sell</button>
-                    </td>                 
+                    </td>
                 </tr>
                 <!-- hidden values! created for each object -->
                 <input type="hidden" name="crypto_currency" id="crypto_currency" value="{{this.crypto_currency}}">
@@ -46,34 +52,25 @@
                 <input type="hidden" name="purchase_date" id="gain" class="gain" value="{{this.gain}}">
             </form>
             {{/each}}
+            {{#each allIDs}}
+            <input type="hidden" id={{this.id}} value={{this.price}} class="price">
+            {{/each}}
         </tbody>
     </table>
 </div>
-<!--Uses client side java to get the total return value.-->
- <script>
-     var elements = document.getElementsByClassName("loss");
-     var gainElement=document.getElementsByClassName("gain");
-     var totalLoss=0;
-     var lossVal = 0;
-     var totalGains=0;
-     var gainVal=0;
-for (var i = 0, len = elements.length; i < len; i++) {
-    lossVal=parseFloat(elements[i].value);
-    gainVal=parseFloat(gainElement[i].value);
-    if (isNaN(lossVal)){
-         totalLoss += 0;
+
+<script>
+    var priceList = document.getElementsByClassName("price");
+    var idList = document.getElementsByClassName("unique_id");
+    len = idList.length;
+    len2 = priceList.length;
+    var i;
+    var q;
+    for (i = 0; i < len; i++) {
+        for (q = 0; q < len2; q++) {
+            if (priceList[q].id == idList[i].value) {
+                document.getElementById(idList[i].id).value = priceList[q].value;
+            }
         }
-    else{
-        totalLoss-=lossVal;
     }
-        if (isNaN(gainVal)){
-         totalGains += 0;
-        }
-    else{
-        totalGains+=gainVal;
-    }
-}
-//after looping through and summing each of the gains and losses, we subtract total losses from total gains to provide a "portfolio value" or "return on investment"
-    var total=parseFloat(totalGains)-parseFloat(totalLoss);
-    document.getElementById("TotalReturn").value=parseFloat(total);
- </script>
+</script>

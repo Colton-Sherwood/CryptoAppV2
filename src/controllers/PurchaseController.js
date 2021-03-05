@@ -72,13 +72,32 @@ exports.renderPurchase = (req, res) => {
 //renders the account page with transaction history
 exports.renderAccount = (req, res) => {
     const user = req.user.email
+    var totalGain = 0
+    var totalLoss = 0
+    var total = 0
+    var allIDs = {}
+
     Purchase.find({ usernameID: user }).then(history => {
+
+        history.forEach(element => {
+            totalGain += element.gain
+            totalLoss += element.loss
+            console.log(element.gain)
+        });
+        console.log("this is total " + totalGain)
+        console.log("this is total loss " + totalLoss)
+        console.log(totalGain + totalLoss)
+        total = totalGain + totalLoss
+
         history = history.reverse();
-        console.log(history)
+
+
+
         res.render('account', {
             name: req.user.name,
-            history
-            
+            history,
+            total,
+            allIDs
         });
     })
 }
@@ -92,7 +111,7 @@ exports.getPurchase = (req, res) => {
     const name = req.user.name;
     const email = req.user.email;
     let errors = [];
-    
+
     if (quantity <= 0 || '') {
         errors.push({ msg: "Please enter a quantity greater than 0" })
     }
@@ -129,7 +148,9 @@ exports.sellCrypto = (req, res) => {
     const sellQuantity = req.body.sellQuantity
     const unique_id = req.body.unique_id
     const purchase_price = req.body.us_dollar
-    const purchase_date = req.body.purchase_date
+    var totalGain = 0
+    var totalLoss = 0
+    var total = 0
 
     //set up API call to get info we want based on value entered
     const url = `https://api.nomics.com/v1/currencies/ticker?key=${CRYPTO_API_KEY}&ids=${crypto_currency}&interval=1d,30d`
@@ -138,7 +159,8 @@ exports.sellCrypto = (req, res) => {
     axios.get(url).then((response) => {
         // get currentPrice of crypto from the API
         const currentPrice = response.data[0].price
-        const result = (sellQuantity * purchase_price) - (sellQuantity * currentPrice)
+        const result = (sellQuantity * currentPrice) - (sellQuantity * purchase_price)
+        const user = req.user.email
 
         if (result > 0) {
             // if the sale makes money we will update the "gain" property of that purchase
@@ -147,16 +169,15 @@ exports.sellCrypto = (req, res) => {
                 //console.log(purchase);
                 purchase.gain = result;
                 purchase.coin_count -= sellQuantity
-                console.log(purchase);
                 purchase.save();
                 res.redirect("account")
             })
             // if sale loses money update loss of purchase
         } else {
             Purchase.findOne({ _id: `${unique_id}` }).then(purchase => {
-                purchase.loss = result;
+                purchase.loss = Math.abs(result);
                 purchase.coin_count -= sellQuantity
-                console.log(purchase.loss);
+                //console.log(purchase);
                 purchase.save();
                 res.redirect("account")
             }).catch((error) => {

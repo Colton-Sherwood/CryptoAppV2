@@ -24,10 +24,12 @@ const PurchaseSchema = new mongoose.Schema({
         default: Date.now
     },
     loss: {
-        type: Number
+        type: Number,
+        default: 0
     },
     gain: {
-        type: Number
+        type: Number,
+        default: 0
     }
 });
 //FP END
