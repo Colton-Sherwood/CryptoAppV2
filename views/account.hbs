@@ -3,7 +3,7 @@
 <p class="lead mb-3">Welcome {{name}}</p>
 <a href="/user/logout" class="btn btn-secondary">Logout</a>
 <br><br>
-<input class="form-control no-border" type="text" id="TotalReturn" placeholder="Total Return" readonly>
+<input class="form-control no-border" type="text" id="TotalReturn" placeholder="Total Return" value={{total}}>
 
 <div class="table-responsive mt-3" style="border-radius: 1em;">
     <table class="table table-dark table-borderless table-striped">
@@ -13,7 +13,6 @@
                 <th scope="col">Purchase Date</th>
                 <th scope="col">Original Coin Cost</th>
                 <th scope="col">Current Coin Cost</th>
-                <th scope="col">Profit Per Coin</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Total</th>
                 <th scope="col">Quantity to sell</th>
@@ -31,7 +30,6 @@
                         <input type="text" name="{{this._id}}" id="{{this._id}}" class="unique_id"
                             value="{{this.crypto_currency}}" readonly>
                     </td>
-                    <td>PROFIT</td>
                     <td scope="row">{{this.coin_count}}</td>
                     <td scope="row">${{this.total}}</td>
                     <td scope="row">
